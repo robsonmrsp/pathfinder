@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='app'>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='br.com.mr.pathfinder.App'/>
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/app/greet" class="br.com.mr.pathfinder.server.GreetingServiceImpl" />
+
+</module>
