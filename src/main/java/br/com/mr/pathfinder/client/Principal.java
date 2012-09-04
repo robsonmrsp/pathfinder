@@ -1,15 +1,28 @@
 package br.com.mr.pathfinder.client;
 
+import java.util.List;
+
+import br.com.mr.pathfinder.client.json.JsonUtil;
+import br.com.mr.pathfinder.client.json.LatLongJson;
+
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.geolocation.client.Geolocation;
+import com.google.gwt.geolocation.client.Position;
+import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.maps.client.event.MapRightClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
+import com.google.gwt.maps.client.overlay.Icon;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -50,7 +63,25 @@ public class Principal extends Composite {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				if (response.getText() != null) {
+					long l = System.currentTimeMillis();
 					System.err.println(response.getText());
+					List<JSONObject> asList = JsonUtil.asList(JsonUtil.noSafeEval(response.getText()));
+					for (JSONObject busStopJson : asList) {
+						BusStopJson b = new BusStopJson(busStopJson);
+						// System.out.println(b);
+						LatLongJson geoLocation2 = b.getGeoLocation();
+						processPoint(b);
+					}
+					
+					Icon icon = Icon.newInstance("http://cdn1.iconfinder.com/data/icons/Aristocracy_WebDesignTuts/32/Marker.png");
+//					Icon icon = Icon.newInstance("http://cdn1.iconfinder.com/data/icons/iconslandgps/PNG/32x32/Pinpoints/Flag3RightBlue2.png");
+					icon.setIconAnchor(Point.newInstance(16, 32));
+					MarkerOptions options = MarkerOptions.newInstance(icon);
+					
+					Marker marker = new Marker(geoLocation, options);
+					mapPanel.addOverlay(marker);
+					
+					System.out.println("processados " + asList.size() + " em " + (System.currentTimeMillis() - l) + "ms");
 				}
 			}
 
@@ -77,6 +108,24 @@ public class Principal extends Composite {
 					showMenu(event.getPoint());
 				}
 			});
+
+			Geolocation geolocation = Geolocation.getIfSupported();
+			if (geolocation != null) {
+				geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
+					@Override
+					public void onSuccess(Position result) {
+						mapPanel.setCenter(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
+						mapPanel.setZoomLevel(13);
+					}
+
+					@Override
+					public void onFailure(PositionError reason) {
+						System.out.println(reason.getMessage());
+					}
+				});
+			} else {
+				System.out.println("GeoLocation not available!");
+			}
 		}
 		return mapPanel;
 	}
@@ -136,4 +185,20 @@ public class Principal extends Composite {
 		busStopsRequestBuilder.setRequestData(latLongJson.toString());
 		busStopsRequestBuilder.send();
 	}
+
+	private void processPoint(BusStopJson p) {
+		
+		Icon icon = Icon.newInstance("http://cdn1.iconfinder.com/data/icons/iconslandgps/PNG/32x32/Pinpoints/Flag3RightBlue2.png");
+		icon.setIconAnchor(Point.newInstance(4, 32));
+		MarkerOptions mOpts = MarkerOptions.newInstance(icon);
+
+		Marker overlay = new Marker(LatLng.newInstance(p.getGeoLocation().getLatitude(), p.getGeoLocation().getLongitude()), mOpts);
+		
+		mapPanel.addOverlay(overlay);
+	}
+
+	private void updateBusStops(List<BusStopJson> busStopJsons) {
+
+	}
+
 }

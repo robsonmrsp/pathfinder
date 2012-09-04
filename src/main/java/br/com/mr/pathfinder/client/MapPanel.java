@@ -17,12 +17,13 @@ import com.google.gwt.user.client.ui.Widget;
 public class MapPanel extends FlowPanel implements MapContainer {
 	private MapWidget map;
 
-	public MapPanel( double latitude, double longitude, int zoomLevel) {
+	public MapPanel(double latitude, double longitude, int zoomLevel) {
 		map = new MapWidget(LatLng.newInstance(latitude, longitude), zoomLevel);
 		initComponents();
 	}
+
 	public MapPanel() {
-		this(-17.2, -57.2 , 4);
+		this(-17.2, -57.2, 4);
 	}
 
 	private void initComponents() {
@@ -64,12 +65,16 @@ public class MapPanel extends FlowPanel implements MapContainer {
 	public void addMapClickHandler(MapClickHandler handler) {
 		map.addMapClickHandler(handler);
 	}
-	public LatLng getEquivalentLatLng(Point point){
-		return map.convertDivPixelToLatLng(point);
+
+	public LatLng getEquivalentLatLng(Point point) {
+		return map.convertContainerPixelToLatLng(point);
 	}
 
 	public void addMapDoubleClickHandler(MapDoubleClickHandler handler) {
 		map.addMapDoubleClickHandler(handler);
 	}
-	
+
+	public void setZoomLevel(int level) {
+		map.setZoomLevel(level);
+	}
 }

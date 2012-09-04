@@ -52,7 +52,8 @@
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
 		scope="singleton">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="br.com.mr.pathfinder.entities" />
+												
+		<property name="packagesToScan" value="br.com.mr.pathfinder.server.entities" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</prop>

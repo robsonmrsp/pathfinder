@@ -38,6 +38,7 @@ public class BusStop implements Serializable {
 	private String addressLocation;
 
 	@ManyToMany(mappedBy = "busStops")
+	@JsonIgnore
 	private Set<BusService> busServices;
 
 	@Column(name = "THE_GEOM")

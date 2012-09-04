@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=
+lastWarOutDir=C\:/jbossStudio/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/App
+launchConfigExternalUrlPrefix=http\://localhost\:8080/App/
+warSrcDir=src/main/webapp
+warSrcDirIsOutput=false

@@ -1,5 +1,7 @@
 package br.com.mr.pathfinder.server;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,8 +32,9 @@ public class PathFinderRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findpoints")
-	public Response findBusStops(GeograficPoint point) {		
-//		return Response.ok().entity(busStopService.findNextBusStops(point)).build();
-		return Response.ok().entity(point).build();
+	public Response findBusStops(GeograficPoint point) {
+		List<BusStopTO> l = busStopService.findNextBusStops(point);
+		return Response.ok().entity(l).build();
+//		return Response.ok().entity(point).build();
 	}
 }

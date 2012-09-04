@@ -6,5 +6,5 @@ import br.com.mr.pathfinder.server.entities.BusStop;
 
 public interface BusStopService {
 
-	List<BusStop> findNextBusStops(GeograficPoint point);
+	List<BusStopTO> findNextBusStops(GeograficPoint point);
 }

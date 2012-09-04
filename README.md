@@ -10,3 +10,5 @@ Hibernate
 GWT
 Maven
 Etc
+
+Hoje a aplicação já é capaz de exibir os pontos proximos(500 metos) do ponto em que o usuário clica.
