@@ -18,7 +18,7 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 
 		<jackson.version>1.8.6</jackson.version>
-		<spring.version>3.0.6.RELEASE</spring.version>
+		<spring.version>3.2.18.RELEASE_OSGI</spring.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 
 	</properties>
